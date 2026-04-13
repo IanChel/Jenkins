@@ -51,6 +51,31 @@ pipeline {
             }
         }
 
+        stage('Jacoco') {
+            steps {
+                // Analyse de la couverture de code avec Jacoco
+                dir('projet_jenkins/ICDE848') {
+                    script {
+                        if (isUnix()) {
+                            sh 'mvn verify -B -DskipTests'
+                        } else {
+                            bat 'mvn verify -B -DskipTests'
+                        }
+                    }
+                }
+            }
+            post {
+                always {
+                    // Publie le rapport de couverture Jacoco
+                    jacoco(
+                        execPattern: '**/target/jacoco.exec',
+                        classPattern: '**/target/classes',
+                        sourcePattern: '**/src/main/java'
+                    )
+                }
+            }
+        }
+
         stage('Checkstyle') {
             steps {
                 // Et le dir() ici également
