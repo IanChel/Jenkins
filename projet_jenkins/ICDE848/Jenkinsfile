@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    // 1. AJOUT : On déclare l'outil Maven pour que Jenkins sache exécuter la commande 'mvn'
+    // ⚠️ IMPORTANT : Remplace 'Maven_3' par le nom exact que tu as donné à ton Maven dans Jenkins (Administrer Jenkins > Tools)
+    tools {
+        maven 'Maven_3'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -11,11 +17,14 @@ pipeline {
 
         stage('Build') {
             steps {
-                script {
-                    if (isUnix()) {
-                        sh 'mvn clean compile -B'
-                    } else {
-                        bat 'mvn clean compile -B'
+                // 2. AJOUT : On se déplace dans le bon dossier avant de lancer les commandes
+                dir('projet_jenkins/ICDE848') {
+                    script {
+                        if (isUnix()) {
+                            sh 'mvn clean compile -B'
+                        } else {
+                            bat 'mvn clean compile -B'
+                        }
                     }
                 }
             }
@@ -23,11 +32,14 @@ pipeline {
 
         stage('Unit Tests') {
             steps {
-                script {
-                    if (isUnix()) {
-                        sh 'mvn test -B'
-                    } else {
-                        bat 'mvn test -B'
+                // On n'oublie pas le dir() ici aussi
+                dir('projet_jenkins/ICDE848') {
+                    script {
+                        if (isUnix()) {
+                            sh 'mvn test -B'
+                        } else {
+                            bat 'mvn test -B'
+                        }
                     }
                 }
             }
@@ -40,11 +52,14 @@ pipeline {
 
         stage('Checkstyle') {
             steps {
-                script {
-                    if (isUnix()) {
-                        sh 'mvn checkstyle:checkstyle -B -Dcheckstyle.config.location=checkstyle.xml'
-                    } else {
-                        bat 'mvn checkstyle:checkstyle -B -Dcheckstyle.config.location=checkstyle.xml'
+                // Et le dir() ici également
+                dir('projet_jenkins/ICDE848') {
+                    script {
+                        if (isUnix()) {
+                            sh 'mvn checkstyle:checkstyle -B -Dcheckstyle.config.location=checkstyle.xml'
+                        } else {
+                            bat 'mvn checkstyle:checkstyle -B -Dcheckstyle.config.location=checkstyle.xml'
+                        }
                     }
                 }
             }
