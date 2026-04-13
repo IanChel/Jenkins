@@ -1,0 +1,58 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                // Récupère le code depuis le SCM configuré dans Jenkins
+                checkout scm
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    if (isUnix()) {
+                        sh 'mvn clean compile -B'
+                    } else {
+                        bat 'mvn clean compile -B'
+                    }
+                }
+            }
+        }
+
+        stage('Unit Tests') {
+            steps {
+                script {
+                    if (isUnix()) {
+                        sh 'mvn test -B'
+                    } else {
+                        bat 'mvn test -B'
+                    }
+                }
+            }
+            post {
+                always {
+                    junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
+                }
+            }
+        }
+
+        stage('Checkstyle') {
+            steps {
+                script {
+                    if (isUnix()) {
+                        sh 'mvn checkstyle:checkstyle -B -Dcheckstyle.config.location=checkstyle.xml'
+                    } else {
+                        bat 'mvn checkstyle:checkstyle -B -Dcheckstyle.config.location=checkstyle.xml'
+                    }
+                }
+            }
+            post {
+                always {
+                    archiveArtifacts allowEmptyArchive: true, artifacts: '**/target/checkstyle-result.xml'
+                }
+            }
+        }
+    }
+}
