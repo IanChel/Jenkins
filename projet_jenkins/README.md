@@ -18,3 +18,5 @@ Le pipeline automatisé inclut :
 4. **Checkstyle** - Vérification des conventions de code
 
 Dernier test d'automatisation CI/CD via Webhook le 13/04/2026.
+
+### Test validation Multibranch Pipeline
