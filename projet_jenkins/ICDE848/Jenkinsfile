@@ -71,4 +71,21 @@ pipeline {
             }
         }
     }
+
+    post {
+        failure {
+            mail(
+                to: 'chel65520@gmail.com',
+                subject: "Build Failed: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                body: "Le build a échoué. Vérifie la console ici : ${env.BUILD_URL}"
+            )
+        }
+        fixed {
+            mail(
+                to: 'chel65520@gmail.com',
+                subject: "Build Restored: ${env.JOB_NAME} [${env.BUILD_NUMBER}]",
+                body: 'Le build est de nouveau stable (SUCCESS).'
+            )
+        }
+    }
 }
