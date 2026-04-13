@@ -20,3 +20,5 @@ Le pipeline automatisé inclut :
 Dernier test d'automatisation CI/CD via Webhook le 13/04/2026.
 
 ### Test validation Multibranch Pipeline
+
+> Sécurité : Analyse SpotBugs et Qualité activées sur toutes les branches.
