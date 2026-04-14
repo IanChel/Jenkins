@@ -158,6 +158,6 @@ class CommandeServiceTest {
     @DisplayName("TEST D'ERREUR - À SUPPRIMER")
     void testErreurPourMailNotification() {
         // Ce test échoue volontairement pour tester la notification par mail
-        fail("Erreur délibérée pour tester l'envoi du mail de notification Jenkins");
+        // fail("Erreur délibérée pour tester l'envoi du mail de notification Jenkins");
     }
 }
