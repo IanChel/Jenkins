@@ -16,7 +16,7 @@ pipeline {
             }
         }
 
-        stage('Build') {
+       
             steps {
                 // 2. AJOUT : On se déplace dans le bon dossier avant de lancer les commandes
                 dir('projet_jenkins/ICDE848') {
